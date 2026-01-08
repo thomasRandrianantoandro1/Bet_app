@@ -1,0 +1,31 @@
+<!doctype html>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+<head>
+    <title>{% block title %}{% endblock %} - EIC Bet </title>
+
+</head>
+
+<body>
+<button id="toggle-btn">☰</button>
+<div id="mySidebar" class="sidebar">
+    <ul>
+        <li><a href="#">Liste des matchs</a></li>  <!-- il faudra changer avec url_for-->
+        <li><a href="#">Matchs en cours </a></li>
+        <li><a href="{{ url_for('pari.pari_unique')}}">Pari unique</a></li>
+        <li><a href="{{ url_for('historique.pari_unique')}}">Résultats pari</a></li>
+        <li><a href="#">Bilan financier</a></li>
+
+    </ul>
+
+</div>
+
+<div id="main-content">
+
+
+    {% block content %}{% endblock %}
+</div>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+

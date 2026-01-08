@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="conteneur_bet">
+        <div  class="liste_bet_a_prendre">
+            <h2> Pari à prendre </h2>
+            <p class="subtitle"> Paris actifs</p>
+            <div class="carte_de_pari_conteneur">
+                {% for pari in paris %}
+                    <div class="info_carte_pari">
+                        <div class="nom_createur_pari"> {{ pari['nom_createur'] }}</div>
+                        <div class="pari_place"><strong> {{ pari['intitule'] }}</strong></div>
+                        <div class="cote"> {{ pari['cote'] }}</div>
+                        <div class="mise_de_jeu"> {{ pari['mise'] }}</div>
+                        {% if not pari['preneur_id']%}
+                            {% if pari['createur_id']==g.user.id_user %}
+                                <button class="bouton_pari_indispo" disabled> Impossible</button>
+                            {% else %}
+                                {# PERMET D'ENVOYER LE TRUC l'ID DIRECTMENT AVEC UN FORM SANS CHANGER EN CACHANT l'ID' #}
+                                <form method="POST" action="{{ url_for('pari.prendre_un_pari') }}">
+                                    <input type="hidden" name="id_du_pari" value="{{ pari['id_single_bet'] }}">
+                                    <button type="submit" class="bouton_prend_pari"> Prendre le pari </button>
+                                </form>
+                            {% endif %}
+                        {% else %}
+                            <div class="preneur_du_pari">{{ pari['nom_preneur'] }} </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="creation_pari">
+            <h2> Créer un nouveau pari</h2>
+            <form method="POST" action="{{ url_for('pari.pari_unique') }}" class="formulaire">
+                <label> Pari : </label><input type="text" name="intitule" required>
+                <label> Cote : </label><input type="number" name="cote" step="1" min="1" required >
+                <label> Mise en jeu : </label><input type="number" name="mise" step="1" min="1" required >
+                <button type ="submit" class="bouton_valider_pari_unique"> Valider</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+

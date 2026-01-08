@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content  %}
+
+    <div class="navigation_pari">
+        <button onclick="afficherPari('unique')" id="btn_unique" class="pari_nav active"> Pari unique</button>
+        <button onclick="afficherPari('combine')" id="btn_combine" class="pari_nav"> Pari combiné</button>
+    </div>
+
+{#  Pari Unique   #}
+<div id="section_unique" class="conteneur_historique_pari_unique">
+<div class="info_historique_pari_unique_header">
+        <div>Créateur</div>
+        <div>Pari</div>
+        <div>Cote</div>
+        <div>Mise</div>
+        <div>Preneur</div>
+        <div>Résultat</div>
+    </div>
+    {% for pari in historique %}
+            <div class="info_historique_pari_unique">
+                <div class="nom_createur_pari"> {{ pari['nom_createur'] }}</div>
+                <div class="pari_place"><strong> {{ pari['intitule'] }}</strong></div>
+                <div class="cote"> {{ pari['cote'] }}</div>
+                <div class="mise_de_jeu"> {{ pari['mise'] }}</div>
+                <div class="preneur_du_pari">{{ pari['nom_preneur'] }} </div>
+                <div class="resultat_pari">
+            <span class="badge-{{ pari['resultat'] }}">{{ pari['resultat'] }}</span> </div>
+            </div>
+{% endfor %}
+</div>
+
+<div id="section_combine" class="conteneur_historique_pari_combine">
+<div> TEST POUR VOIR SI CA MARCHE </div>
+</div>
+
+<script>
+function afficherPari(type){
+    const sectionUnique=document.getElementById('section_unique');
+    const sectionCombine=document.getElementById('section_combine');
+    const btnUnique = document.getElementById('btn_unique');
+    const btnCombine = document.getElementById('btn_combine');
+
+    if (type === 'unique') {
+        sectionUnique.classList.remove('hidden');
+        sectionCombine.classList.add('hidden');
+        btnUnique.classList.add('active');
+        btnCombine.classList.remove('active');
+    } else {
+        sectionUnique.classList.add('hidden');
+        sectionCombine.classList.remove('hidden');
+        btnCombine.classList.add('active');
+        btnUnique.classList.remove('active');
+    }
+}
+</script>
+{% endblock %}

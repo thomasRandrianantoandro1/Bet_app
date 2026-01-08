@@ -1,0 +1,213 @@
+
+
+.sidebar {
+    width: 260px;
+    height: 100vh; /* Toute la hauteur de l'écran */
+    background-color: #1a1a1a; /* Gris très foncé */
+    padding: 20px;
+    padding-top: 80px;
+    position: fixed; /* Reste fixe au scroll */
+    left: -300px;
+    top: 0;
+    transition : left 0.3s ease;
+    z-index : 1000;
+}
+.sidebar.active{
+    left: 0;
+}
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.sidebar a {
+    display: block;
+    color: #ecf0f1;
+    text-decoration: none;
+    padding: 15px;
+    background-color: #2c3e50; /* Couleur de la case */
+    border-radius: 8px; /* Coins arrondis */
+    font-family: Arial, sans-serif;
+    transition: all 0.3s ease; /* Animation fluide */
+    border-left: 4px solid transparent; /* Petite barre discrète */
+}
+
+/* Effet quand on passe la souris dessus */
+.sidebar a:hover {
+    background-color: #3498db; /* Bleu vif au survol */
+    border-left: 4px solid #ffffff; /* La barre devient blanche */
+    padding-left: 25px; /* Petit décalage vers la droite */
+}
+
+#toggle-btn{
+    position : fixed;
+    left: 20px;
+    top: 20px;
+    z-index:1001;
+    padding:10px 15px;
+    cursor: pointer;
+    background : #2c3e50;
+    color: white;
+    border:none;
+    border-radius: 5px;
+}
+
+#main-content {
+    margin-left: 70px;
+    transition: margin-left 0.3s ease;
+    padding : 20px;
+}
+
+#main-content.active { /* Comment on met id.### le ### prend un token en JS */
+    margin-left: 200px
+}
+
+.conteneur_bet{
+    display:flex;  /*sépare l'affichacge en 2 pour ce qu"on veut*/
+    gap : 40px;
+    color: #333;
+}
+.liste_bet_a_prendre{
+    flex:1;
+}
+
+.carte_de_pari_conteneur{
+    display:flex ;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+.info_carte_pari{
+    display: flex;
+    /*flex-grow: 1;*/
+    /*flex-direction :row;*/
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    border: 2px solid #2c3e50;
+    border-radius:15px;
+    padding:10px 20px;
+    width: 100%;
+}
+
+.bouton_prend_pari{
+    white-space: nowrap;
+    background: #2c3e50;
+    color: white;
+    border-radius: 20px;
+    padding: 8px 15px;
+    border: none;
+    cursor: pointer;
+}
+
+.creation_pari{
+    flex:1;
+    border-left:2px solid #ccc;
+    padding-left:30px;
+
+}
+.formulaire{
+    display:flex;
+    flex-direction : column;
+    gap:10px;
+}
+
+.formulaire input{
+    padding:8px;
+    border-radius:5px;
+    border:1px solid#ccc;
+}
+
+.bouton_valider_pari_unique{
+    margin-top: 15px;
+    padding: 10px;
+    background: #27ae60;
+    color:white;
+    border-radius: 10px;
+    border:none;
+}
+
+.conteneur_historique_pari_unique {
+    width: 100%;
+    max-width: 1000px;
+    margin: 20px auto;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.info_historique_pari_unique {
+    display: flex; /* Aligne les éléments sur une ligne */
+    padding: 15px;
+    background-color: white;
+    border-bottom: 1px solid #eee;
+    align-items: center;
+}
+
+/* Style spécifique pour les cellules (chaque div enfant) */
+.info_historique_pari_unique > div {
+    flex: 1; /* Donne la même largeur à chaque colonne */
+    text-align: center;
+}
+
+/* Style de l'en-tête */
+.info_historique_pari_unique_header {
+    display: flex;
+    padding: 15px;
+    background-color: #2c3e50;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+.info_historique_pari_unique_header > div {
+    flex: 1; /* Donne la même largeur à chaque colonne */
+    text-align: center;
+}
+
+/* Effet de zèbre (une ligne sur deux grise) */
+.info_historique_pari_unique:nth-child(even):not(.header) {
+    background-color: #f9f9f9;
+}
+
+/* Hover : changer la couleur au survol de la souris */
+.info_historique_pari_unique:hover:not(.header) {
+    background-color: #f1f1f1;
+}
+
+.resultat_pari span {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8em;
+}
+
+.badge-1 { background-color: #d4edda; color: #155724; } /* Gagné */
+.badge-0 { background-color: #f8d7da; color: #721c24; } /* Perdu */
+
+.hidden {
+    display: none;
+}
+
+/* Style pour le bouton actif (exemple) */
+.pari-nav-item.active {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+/* Style de base de tes boutons de navigation */
+.pari-nav-item {
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    margin-left: 70px;
+    /* Ajoute tes polices et marges ici */
+}
+.navigation_pari {
+    display: flex;          /* Active le mode flex */
+    justify-content: center; /* Centre les boutons horizontalement */
+    gap: 20px;              /* Ajoute de l'espace entre les deux boutons */
+    margin-bottom: 30px;    /* Espace avec le tableau en dessous */
+    margin-top: 20px;       /* Espace avec le haut de la page */
+}
