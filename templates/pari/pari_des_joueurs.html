@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <table class="table_des_joueurs">
+    <thead>
+        <tr>
+            <th>Match</th>
+            {% for nom in joueurs %}
+                <th>{{ nom }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for match, paris_du_match in tableau.items() %}
+        <tr>
+            <td><strong>{{ match }}</strong></td>
+            {% for nom in joueurs %}
+                <td>
+                    {{ paris_du_match.get(nom, '-') }}
+                </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

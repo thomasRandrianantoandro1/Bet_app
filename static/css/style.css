@@ -211,3 +211,134 @@
     margin-bottom: 30px;    /* Espace avec le tableau en dessous */
     margin-top: 20px;       /* Espace avec le haut de la page */
 }
+
+/* Conteneur principal */
+.Conteneur_matchs_combine {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Ligne de chaque match */
+.bloc_match {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f8f9fa;
+    padding: 15px 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border: 1px solid #e0e0e0;
+}
+
+/* Style des noms d'équipes */
+.equipe_dom, .equipe_ext {
+    flex: 1;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.equipe_dom {
+    text-align: right;
+    margin-right: 15px;
+}
+
+.equipe_ext {
+    text-align: left;
+    margin-left: 15px;
+}
+
+/* Le formulaire de score au centre */
+.score {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #2c3e50;
+    padding: 10px;
+    border-radius: 8px;
+    color: white;
+}
+
+/* Style des inputs de score */
+.score input[type="number"] {
+    width: 45px;
+    height: 35px;
+    text-align: center;
+    border-radius: 4px;
+    border: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Supprimer les flèches sur les inputs number pour un look plus clean */
+.score input::-webkit-outer-spin-button,
+.score input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Style global pour le tableau */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+}
+
+/* En-tête du tableau (Ligne verte sport) */
+.table Greenland thead tr {
+    background-color: #1b5e20; /* Vert foncé sportif */
+    color: #ffffff;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Style des cellules */
+.table th,
+.table td {
+    padding: 12px 15px;
+    border: 1px solid #f3f3f3;
+}
+
+/* Alignement spécial pour la première colonne (Matchs) */
+.table tbody td:first-child {
+    text-align: left;
+    font-weight: 600;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* Centrer les scores des joueurs */
+.table tbody td {
+    text-align: center;
+}
+
+/* Alternance de couleurs pour les lignes (Zebra effect) */
+.table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+/* Effet au survol de la souris */
+.table tbody tr:hover {
+    background-color: #e8f5e9;
+    transition: 0.3s;
+}
+
+/* Style pour les scores (petits badges) */
+.score-badge {
+    background: #e0e0e0;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+}

@@ -1,0 +1,74 @@
+{% extends 'admin.html' %}
+
+{% block title %} Joueurs {% endblock %}
+
+{% block content %}
+    <div class="navigation_joueurs" >
+        <button onclick="afficherJoueur('liste_joueur')" id="btn_liste" class="nav_joueurs active"> Liste des joueurs</button>
+        <button onclick="afficherJoueur('creation_joueur')" id="btn_creation" class="nav_joueurs"> Création d'un joueur</button>
+    </div>
+
+    <div id="section_liste_joueurs" class="conteneur_liste_joueurs">
+        <div class="info_joueurs_header">
+            <div>ID_user</div>
+            <div>Nom</div>
+            <div>Token</div>
+            <div>Role</div>
+            <div>    </div>
+        </div>
+        {% for joueur in joueurs %}
+            <div class="info_joueur">
+                <div class="id_joueur">{{ joueur['id_user'] }}</div>
+                <div class="nom_joueur"><strong>{{ joueur['nom'] }}</strong></div>
+                <div class="token_joueur">{{ joueur['token'] }}</div>
+                <div class="role_joueur">{{ "Admin" if joueur['role']|int == 1 else "Classique" }}</div>
+
+                <div class="action_joueur">
+                    <form action="{{ url_for('admin.modifier_role', id_user=joueur['id_user']) }}" method="POST">
+                        {% if joueur['role']|int == 1 %}
+                            <input type="hidden" name="role" value="0">
+                            <button type="submit" class="btn_action_role">Retirer Admin</button>
+                        {% else %}
+                            <input type="hidden" name="role" value="1">
+                            <button type="submit" class="btn_action_role admin">Passer Admin</button>
+                        {% endif %}
+                    </form>
+                </div>
+
+            </div>
+        {% endfor %}
+    </div>
+    <div id="section_creation_joueur" class="conteneur_creation_joueurs">
+
+        <form method="POST" action="{{ url_for('admin.joueurs') }}" class="formulaire_creation_joueurs">
+            <label> Nom du joueur : </label> <input type="text" name="nom" required>
+            <label> Role du joueur : </label>
+            <select name="role">
+                <option selected="selected" value="0">Classique</option>
+                <option value="1">Admin</option>
+            </select>
+            <button type="submit" class="bouton_valider_creation_joueur"> Valider</button>
+        </form>
+    </div>
+
+    <script>
+        function afficherJoueur(type){
+            const sectionListeJoueur=document.getElementById('section_liste_joueurs');
+            const sectionCreationJoueur=document.getElementById('section_creation_joueur');
+            const btnListeJoueur = document.getElementById('btn_liste');
+            const btnCreationJoueur = document.getElementById('btn_creation');
+
+            if (type === 'liste_joueur') {
+                sectionListeJoueur.classList.remove('hidden');
+                sectionCreationJoueur.classList.add('hidden');
+                btnListeJoueur.classList.add('active');
+                btnCreationJoueur.classList.remove('active');
+            } else {
+                sectionListeJoueur.classList.add('hidden');
+                sectionCreationJoueur.classList.remove('hidden');
+                btnCreationJoueur.classList.add('active');
+                btnListeJoueur.classList.remove('active');
+            }
+        }
+    </script>
+{% endblock %}

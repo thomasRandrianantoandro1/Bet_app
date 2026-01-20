@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="POST" action="{{ url_for('pari.pari_combine') }}">
+        <div class="Conteneur_matchs_combine">
+            {% for match in matchs %}
+                <div class="bloc_match">
+                    <div class="equipe_dom">{{ match['equipe_domicile'] }}</div>
+
+                    <div class="score">
+                        <input type="hidden" name="id_ticket" value="{{ match['id_ticket'] }}">
+                        <input type="hidden" name="api_id_match[]" value="{{ match['api_id_match'] }}">
+                        <input type="number" name="score_domicile[]" required>
+                        <div>-</div>
+                        <input type="number" name="score_exterieur[]" required>
+                    </div>
+
+                    <div class="equipe_ext">{{ match['equipe_exterieur'] }}</div>
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="valider_pari_combine">Valider les paris</button>
+        </div>
+    </form>
+{% endblock %}

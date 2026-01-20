@@ -1,0 +1,138 @@
+/* Conteneur principal en Flexbox */
+.admin-wrapper {
+    display: flex;
+    gap: 30px;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    align-items: flex-start;
+}
+
+/* Section de gauche (API) */
+.selection-main {
+    flex: 2;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+#league-select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+/* Cartes de matchs à gauche */
+.match-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    transition: background 0.2s;
+}
+
+.match-item:hover {
+    background-color: #f9f9f9;
+}
+
+.match-item span {
+    font-weight: 600;
+    color: #333;
+}
+
+/* Sidebar à droite */
+.selection-sidebar {
+    flex: 1;
+    background: #2c3e50;
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    position: sticky; /* Reste visible même quand on scroll */
+    top: 20px;
+    min-height: 400px;
+}
+
+.selection-sidebar h3 {
+    border-bottom: 2px solid #34495e;
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+/* Cartes sélectionnées dans la sidebar */
+.selected-card {
+    background: #34495e;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: fadeIn 0.3s ease-in;
+}
+
+.selected-card p {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+/* Boutons */
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    transition: all 0.2s;
+}
+
+.btn-add { /* À ajouter dans ton JS si tu veux cibler ce bouton */
+    background-color: #27ae60;
+    color: white;
+}
+
+.btn-add:hover { background-color: #219150; }
+
+.btn-add:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+}
+
+button[onclick^="supprimer"] {
+    background: #e74c3c;
+    color: white;
+    padding: 5px 10px;
+}
+
+button[onclick^="supprimer"]:hover { background: #c0392b; }
+
+/* Animation simple */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Exemple à ajouter dans ton fichier .css */
+.validation-wrapper {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #ccc;
+}
+
+#btn-publier {
+    width: 100%;
+    padding: 12px;
+    background-color: #28a745; /* Vert */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#btn-publier:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}

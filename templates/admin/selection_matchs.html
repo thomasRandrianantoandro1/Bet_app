@@ -1,0 +1,175 @@
+{% extends 'admin.html' %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin_match_style.css') }}">
+{% block content %}
+
+    <style>
+        /* Structure en deux colonnes */
+        .admin-wrapper {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            align-items: flex-start;
+        }
+        .selection-main { flex: 2; }
+        .selection-sidebar {
+            flex: 1;
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        /* Style des cartes de matchs */
+        .match-item, .selected-card {
+            background: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .selected-card { border-left: 5px solid #28a745; }
+    </style>
+    <div class="admin-wrapper"> <div class="selection-main">
+        <select id="league-select">
+            <option value="">-- Choisir une ligue --</option>
+            <option value="CL">Ligue des Champions</option>
+            <option value="FL1">Ligue 1 (France)</option>
+            <option value="PL">Premier League (Angleterre)</option>
+            <option value="BL1">Bundesliga (Allemagne)</option>
+            <option value="SA">Serie A (Italie)</option>
+            <option value="PD">La Liga (Espagne)</option>
+            <option value="PPL">Primera Liga (Portugal)</option>
+        </select>
+
+        <div id="liste-matchs">
+        </div>
+    </div>
+
+        <aside class="selection-sidebar">
+            <h3>Mes Matchs Sélectionnés</h3>
+            <div id="selection-container">
+            </div>
+
+            <div class="validation-wrapper">
+                <button id="btn-publier" onclick="validerSelection()">
+                    PUBLIER LE COMBINÉ
+                </button>
+            </div>
+        </aside>
+
+    </div>
+
+    <script>
+        const cacheMatchs = {};
+        const zoneMatchs = document.getElementById('liste-matchs');
+        const selectionContainer = document.getElementById('selection-container');
+
+        // CHARGEMENT DES MATCHS
+        document.getElementById('league-select').addEventListener('change', function() {
+            let leagueId = this.value;
+            if(!leagueId) return;
+
+            if (cacheMatchs[leagueId]) {
+                afficherMatchs(cacheMatchs[leagueId]);
+                return;
+            }
+
+            zoneMatchs.innerHTML = "Chargement...";
+            fetch('/admin/api/get_matchs/' + leagueId)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.matches) {
+                        cacheMatchs[leagueId] = data.matches;
+                        afficherMatchs(data.matches);
+                    } else {
+                        zoneMatchs.innerHTML = data.error || "Aucun match aujourd'hui.";
+                    }
+                });
+        });
+
+        function afficherMatchs(matches) {
+            zoneMatchs.innerHTML = "";
+            matches.forEach(m => {
+                let div = document.createElement('div');
+                div.className = "match-item";
+                // Structure précise de Football-data.org : m.homeTeam.name
+                div.innerHTML = `
+                <span>${m.homeTeam.name} vs ${m.awayTeam.name}</span>
+                <button onclick="sauver(${m.id}, '${m.homeTeam.name.replace(/'/g, "\\'")}', '${m.awayTeam.name.replace(/'/g, "\\'")}', this)">
+                    Sélectionner
+                </button>
+            `;
+                zoneMatchs.appendChild(div);
+            });
+        }
+
+        // SAUVEGARDE
+        function sauver(id, home, away, btn) {
+            fetch('/admin/api/sauvegarder', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({id: id, home: home, away: away})
+            })
+                .then(res => res.json())
+                .then(res => {
+                    if(res.status === "succes") {
+                        btn.innerText = "✅";
+                        btn.disabled = true;
+                        chargerSidebar();
+                    }
+                });
+        }
+
+        // SIDEBAR
+        function chargerSidebar() {
+            fetch('/admin/api/get_selection')
+                .then(res => res.json())
+                .then(data => {
+                    selectionContainer.innerHTML = "";
+                    data.selection.forEach(m => {
+                        let div = document.createElement('div');
+                        div.className = "selected-card";
+                        div.innerHTML = `
+                        <p>${m.equipe_domicile} - ${m.equipe_exterieur}</p>
+                        <button onclick="supprimer('${m.api_id_match}')">🗑️</button>
+                    `;
+                        selectionContainer.appendChild(div);
+                    });
+                });
+        }
+
+        function supprimer(apiId) {
+            fetch('/admin/api/supprimer/' + apiId, { method: 'POST' })
+                .then(() => chargerSidebar());
+        }
+
+        window.onload = chargerSidebar;
+
+        function validerSelection() {
+            if (!confirm("Publier ce combiné pour tous les joueurs ?")) return;
+
+            const btn = document.getElementById('btn-publier');
+            btn.disabled = true;
+
+            fetch('/admin/api/valider_selection_officielle', {
+                method: 'POST'
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === "succes") {
+                        alert(data.message);
+                        // On vide la sidebar car les matchs ont basculé dans le ticket officiel
+                        chargerSidebar();
+                    } else {
+                        alert("Erreur : " + data.message);
+                    }
+                })
+                .catch(err => console.error("Erreur:", err))
+                .finally(() => {
+                    btn.disabled = false;
+                });
+        }
+    </script>
+{% endblock %}

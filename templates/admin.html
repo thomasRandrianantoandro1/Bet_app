@@ -1,10 +1,32 @@
-<!doctype html>
-
-{#<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">#}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin_style.css') }}">
 
 <head>
-    <title>{% block title %}{% endblock %} - EIC Bet </title>
+        <title>{% block title %}{% endblock %} - Admin </title>
 
 </head>
 
 
+
+<body>
+<button id="toggle-btn_admin">☰</button>
+<div id="mySidebar_admin" class="sidebar">
+    <ul>
+        <li><a href="{{ url_for('admin.selection_matchs' )}}">Selection de matchs</a></li>  <!-- il faudra changer avec url_for-->
+        <li><a href="{{ url_for('admin.validation_pari') }}">Validation des paris </a></li>
+        <li><a href="{{ url_for('admin.joueurs' )}}">Joueurs</a></li>
+    </ul>
+</div>
+
+<div id="main-content">
+    {% block content %}{% endblock %}
+</div>
+<script>
+const btn = document.getElementById('toggle-btn_admin');
+const sidebar = document.getElementById('mySidebar_admin');
+
+btn.addEventListener('click', () => {
+    sidebar.classList.toggle('active');
+});
+</script>
+
+</body>

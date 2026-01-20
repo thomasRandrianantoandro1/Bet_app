@@ -1,0 +1,97 @@
+{% extends 'admin.html' %}
+{% block title %} Validation pari{% endblock %}
+
+{% block content %}
+    <div class="navigation_pari_admin" >
+        <button onclick="afficherPariAdmin('unique')" id="btn_unique_admin" class="nav_pari_admin active"> Pari unique</button>
+        <button onclick="afficherPariAdmin('combine')" id="btn_combine_admin" class="nav_pari_admin"> Pari combine </button>
+    </div>
+
+    <div id="section_unique_admin" class="conteneur_pari_unique_admin">
+        <div class="info_pari_unique_admin_header">
+            <div>Créateur</div>
+            <div>Pari</div>
+            <div>Cote</div>
+            <div>Mise</div>
+            <div>Preneur</div>
+            <div>Résultat</div>
+        </div>
+        {% for pari in paris_admin_unique %}
+            <div class="info_pari_unique_admin">
+                <div class="nom_createur_pari"> {{ pari['nom_createur'] }}</div>
+                <div class="pari_place"><strong> {{ pari['intitule'] }}</strong></div>
+                <div class="cote"> {{ pari['cote'] }}</div>
+                <div class="mise_de_jeu"> {{ pari['mise'] }}</div>
+                <div class="preneur_du_pari">{{ pari['nom_preneur'] }} </div>
+                <div class="resultat_pari">
+                    <form action="{{ url_for('admin.modifier_resultat_unique') }}" method="POST">
+                        <input type="hidden" name="id_single_bet" value="{{ pari['id_single_bet'] }}">
+                        <select name="nouveau_resultat">
+                            <option value="0">Perdu</option>
+                            <option value="1">Gagné</option>
+                            <option selected="selected" value="2" > En attente </option>
+                            <option value="3"> Annulé</option>
+                        </select>
+                        <button type="submit" class="btn-validation_pari_admin">Valider</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="section_combine_admin" class="conteneur_pari_combine_admin">
+        <table class="table_des_joueurs">
+            <thead>
+            <tr>
+                <th>Match</th>
+                {% for nom in noms_joueurs %}
+                    <th>{{ nom }}</th>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for match, paris_du_match in tableau_final.items() %}
+                <tr>
+                    <td><strong>{{ match }}</strong></td>
+                    {% for nom in noms_joueurs %}
+                        <td>
+                            {{ paris_du_match.get(nom, '-') }}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if id_du_ticket_actuel %}
+            <form action="{{ url_for('admin.vainqueur_pari_combine', id_ticket=id_du_ticket_actuel) }}" method="GET">
+                <button type="submit" class="btn btn-primary">Valider les scores du ticket n°{{ id_du_ticket_actuel }}</button>
+            </form>
+        {% else %}
+            <div class="alert alert-warning">
+                Aucun ticket en cours n'a été trouvé. Veuillez d'abord créer un combiné dans "Sélection Matchs".
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function afficherPariAdmin(type){
+            const sectionUniqueAdmin=document.getElementById('section_unique_admin');
+            const sectionCombineAdmin=document.getElementById('section_combine_admin');
+            const btnUniqueAdmin = document.getElementById('btn_unique_admin');
+            const btnCombineAdmin = document.getElementById('btn_combine_admin');
+
+            if (type === 'unique') {
+                sectionUniqueAdmin.classList.remove('hidden');
+                sectionCombineAdmin.classList.add('hidden');
+                btnUniqueAdmin.classList.add('active');
+                btnCombineAdmin.classList.remove('active');
+            } else {
+                sectionUniqueAdmin.classList.add('hidden');
+                sectionCombineAdmin.classList.remove('hidden');
+                btnCombineAdmin.classList.add('active');
+                btnUniqueAdmin.classList.remove('active');
+            }
+        }
+
+    </script>
+{% endblock %}

@@ -11,11 +11,11 @@
 <button id="toggle-btn">☰</button>
 <div id="mySidebar" class="sidebar">
     <ul>
-        <li><a href="#">Liste des matchs</a></li>  <!-- il faudra changer avec url_for-->
-        <li><a href="#">Matchs en cours </a></li>
+        <li><a href="{{ url_for('pari.pari_combine') }}">Liste des matchs</a></li>  <!-- il faudra changer avec url_for-->
+        <li><a href="{{ url_for('pari.pari_des_joueurs') }}">Matchs en cours </a></li>
         <li><a href="{{ url_for('pari.pari_unique')}}">Pari unique</a></li>
         <li><a href="{{ url_for('historique.pari_unique')}}">Résultats pari</a></li>
-        <li><a href="#">Bilan financier</a></li>
+        <li><a href="{{ url_for('bilan.index') }}">Bilan financier</a></li>
 
     </ul>
 

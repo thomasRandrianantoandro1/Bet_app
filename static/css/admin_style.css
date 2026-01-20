@@ -1,0 +1,321 @@
+:root {
+    --primary-dark: #03142c;
+    --accent-red: #c50000;
+    --text-light: #f8f9fa;
+    --text-gray: #a0aec0;
+    --bg-body: #f0f2f5;
+    --white: #ffffff;
+}
+
+body {
+    /* Utilise les polices natives du système : propre, rapide et moderne */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    background-color: var(--bg-body);
+    margin: 0;
+    color: var(--primary-dark);
+    line-height: 1.5;
+}
+
+/* --- Sidebar --- */
+.sidebar {
+    width: 260px;
+    height: 100vh;
+    background: var(--primary-dark);
+    color: white;
+    position: fixed;
+    left: -260px;
+    transition: transform 0.3s ease;
+    padding-top: 80px;
+    z-index: 1000;
+}
+
+.sidebar.active {
+    transform: translateX(260px);
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li a {
+    display: block;
+    padding: 15px 25px;
+    color: var(--text-gray);
+    text-decoration: none;
+    font-weight: 500;
+    border-left: 4px solid transparent;
+    transition: all 0.2s;
+}
+
+.sidebar ul li a:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 4px solid var(--accent-red);
+}
+
+/* --- Navigation Interne --- */
+.navigation_joueurs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.nav_joueurs {
+    background: var(--white);
+    border: 1px solid #e2e8f0;
+    padding: 10px 20px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 6px;
+    color: var(--primary-dark);
+    transition: all 0.2s;
+}
+
+.nav_joueurs.active {
+    background: var(--primary-dark);
+    color: white;
+    border-color: var(--primary-dark);
+}
+
+/* --- Tableau des Joueurs --- */
+.conteneur_liste_joueurs {
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+}
+
+.info_joueurs_header {
+    background: var(--primary-dark);
+    color: white;
+    display: grid;
+    grid-template-columns: 80px 1fr 2fr 120px;
+    padding: 15px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/* Conteneur parent */
+.info_joueur {
+    display: flex;
+    flex-wrap: wrap; /* Permet de passer à la ligne si c'est vraiment trop étroit */
+    align-items: center;
+    padding: 15px;
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Colonnes équitables */
+.id_joueur, .nom_joueur, .token_joueur, .role_joueur, .action_joueur {
+    flex: 1; /* Chaque colonne prend la même place */
+    min-width: 120px; /* Empêche l'écrasement total du texte */
+}
+
+/* Ajustements spécifiques */
+.id_joueur { flex: 0 0 50px; } /* L'ID reste petit */
+.token_joueur {
+    overflow: hidden;
+    text-overflow: ellipsis; /* Coupe le token proprement s'il est trop long */
+    white-space: nowrap;
+}
+
+/* Le formulaire ne doit pas casser le flex */
+.action_joueur form {
+    display: flex;
+    margin: 0;
+}
+
+
+
+.info_joueur:last-child {
+    border-bottom: none;
+}
+
+.info_joueur:hover {
+    background: #f8fafc;
+}
+
+.role_joueur {
+    color: var(--accent-red);
+    font-weight: 700;
+    font-size: 0.75rem;
+    background: rgba(197, 0, 0, 0.08);
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-align: center;
+}
+
+/* --- Formulaire --- */
+.conteneur_creation_joueurs {
+    max-width: 450px;
+    background: var(--white);
+    padding: 30px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.formulaire_creation_joueurs input,
+.formulaire_creation_joueurs select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 20px 0;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    display: block;
+}
+
+.bouton_valider_creation_joueur {
+    width: 100%;
+    background: var(--accent-red);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.bouton_valider_creation_joueur:hover {
+    background: #a00000;
+}
+
+/* --- Utilitaires --- */
+.hidden { display: none !important; }
+
+.btn_action_role {
+    background: transparent;
+    border: 1px solid var(--primary-dark);
+    color: var(--primary-dark);
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.btn_action_role.admin {
+    border-color: var(--accent-red);
+    color: var(--accent-red);
+}
+
+.btn_action_role:hover {
+    background: var(--primary-dark);
+    color: white;
+}
+
+.btn_action_role.admin:hover {
+    background: var(--accent-red);
+    color: white;
+}
+
+/* Conteneur principal */
+.conteneur_pari_unique_admin {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    margin-top: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Header du tableau */
+.info_pari_unique_admin_header {
+    display: grid;
+    grid-template-columns: 1.5fr 2fr 0.8fr 1fr 1.5fr 2.5fr;
+    background-color: #2c3e50;
+    color: white;
+    padding: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+/* Ligne de pari */
+.info_pari_unique_admin {
+    display: grid;
+    grid-template-columns: 1.5fr 2fr 0.8fr 1fr 1.5fr 2.5fr;
+    align-items: center;
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s;
+}
+
+.info_pari_unique_admin:hover {
+    background-color: #f8f9fa;
+}
+
+/* Style des cellules */
+.pari_place strong {
+    color: #2980b9;
+}
+
+.mise_de_jeu {
+    font-weight: bold;
+    color: #27ae60;
+}
+
+/* Formulaire et Select */
+.resultat_pari form {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+select[name="resultat"] {
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid #ccd1d1;
+    background-color: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+    outline: none;
+}
+
+/* Bouton Valider */
+.btn-validation_pari_admin {
+    background-color: #34495e;
+    color: white;
+    border: none;
+    padding: 7px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.btn-validation_pari_admin:hover {
+    background-color: #1abc9c;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn-validation_pari_admin:active {
+    transform: translateY(0);
+}
+
+/* Bonus : Navigation par onglets */
+.navigation_pari_admin {
+    margin-bottom: 15px;
+}
+
+.nav_pari_admin {
+    padding: 10px 20px;
+    border: none;
+    background: #e0e0e0;
+    cursor: pointer;
+    border-radius: 5px 5px 0 0;
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+.nav_pari_admin.active {
+    background: #2c3e50;
+    color: white;
+}

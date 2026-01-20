@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row mb-4">
+            <div class="col">
+                <h1 class="display-5 text-center">💰 Bilan Financier</h1>
+                <p class="text-muted text-center">Récapitulatif des gains, pertes et dettes croisées.</p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">État des comptes</h5>
+                        <span class="badge bg-secondary">Bilan Net</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                <tr>
+                                    <th>Joueur</th>
+                                    <th class="text-end">Solde Total</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for b in bilans %}
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-sm me-2 bg-light rounded-circle text-center" style="width: 30px; height: 30px; line-height: 30px;">
+                                                    {{ b.nom[0] | upper }}
+                                                </div>
+                                                <strong>{{ b.nom }}</strong>
+                                            </div>
+                                        </td>
+                                        <td class="text-end fw-bold {{ 'text-success' if b.solde > 0 else 'text-danger' if b.solde < 0 else 'text-muted' }}">
+                                            {{ "%.2f"|format(b.solde) }} $
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card h-100 shadow-sm border-primary">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Dettes détaillées</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if dettes %}
+                            <div class="list-group list-group-flush">
+                                {% for d in dettes %}
+                                    <div class="list-group-item">
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+        <p style="margin: 0; padding: 0;">
+            <strong style="color: #dc3545;">{{ d.debiteur }}</strong>
+            doit payer
+            <span style="font-weight: bold; color: #28a745;">{{ "%.2f"|format(d.montant) }} $</span>
+            à
+            <strong style="color: #007bff;">{{ d.creancier }}</strong>
+        </p>
+    </div>
+</div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="text-center py-5">
+                                <p class="text-muted">Aucune dette enregistrée !</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer bg-light text-center small text-muted">
+                        Les calculs incluent les combinés (20$) et les paris uniques.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Optionnel : un peu de style pour les flèches si vous n'avez pas Bootstrap Icons */
+        .bi-arrow-right::before { content: "→"; font-style: normal; font-weight: bold; }
+    </style>
+{% endblock %}

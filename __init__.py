@@ -29,6 +29,12 @@ def create_app(test_config=None):
     from . import auth
     app.register_blueprint(auth.bp)
 
+    from . import admin
+    app.register_blueprint(admin.bp)
+
+    from . import bilan
+    app.register_blueprint(bilan.bp)
+
 
     @app.route('/')
     def hello_world():  # put application's code here

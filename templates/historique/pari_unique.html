@@ -7,17 +7,17 @@
         <button onclick="afficherPari('combine')" id="btn_combine" class="pari_nav"> Pari combiné</button>
     </div>
 
-{#  Pari Unique   #}
-<div id="section_unique" class="conteneur_historique_pari_unique">
-<div class="info_historique_pari_unique_header">
-        <div>Créateur</div>
-        <div>Pari</div>
-        <div>Cote</div>
-        <div>Mise</div>
-        <div>Preneur</div>
-        <div>Résultat</div>
-    </div>
-    {% for pari in historique %}
+    {#  Pari Unique   #}
+    <div id="section_unique" class="conteneur_historique_pari_unique">
+        <div class="info_historique_pari_unique_header">
+            <div>Créateur</div>
+            <div>Pari</div>
+            <div>Cote</div>
+            <div>Mise</div>
+            <div>Preneur</div>
+            <div>Résultat</div>
+        </div>
+        {% for pari in historique %}
             <div class="info_historique_pari_unique">
                 <div class="nom_createur_pari"> {{ pari['nom_createur'] }}</div>
                 <div class="pari_place"><strong> {{ pari['intitule'] }}</strong></div>
@@ -25,33 +25,66 @@
                 <div class="mise_de_jeu"> {{ pari['mise'] }}</div>
                 <div class="preneur_du_pari">{{ pari['nom_preneur'] }} </div>
                 <div class="resultat_pari">
-            <span class="badge-{{ pari['resultat'] }}">{{ pari['resultat'] }}</span> </div>
+                    <span class="badge-{{ pari['resultat'] }}">{{ pari['resultat'] }}</span> </div>
             </div>
-{% endfor %}
+        {% endfor %}
+    </div>
+
+    <div id="section_combine" class="conteneur_historique_pari_combine hidden">
+    {% for ticket in archives %}
+        <div class="ticket_archive_container mb-5 mt-3">
+            <h4 class="bg-dark text-white p-2">
+                Ticket n°{{ ticket['id_ticket'] }} - Terminé le {{ ticket['date_creation'] }}
+                <span class="badge bg-success float-end">Vainqueur : {{ ticket['vainqueur'] }}</span>
+            </h4>
+
+            <table class="table table-bordered table-striped">
+                <thead class="table-light">
+                    <tr>
+                        <th>Match</th>
+                        {% for nom in noms_joueurs %}
+                            <th>{{ nom }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set ticket_id = ticket['id_ticket'] %}
+                    {% if details_archives[ticket_id] %}
+                        {% for match, pronos in details_archives[ticket_id].items() %}
+                            <tr>
+                                <td><strong>{{ match }}</strong></td>
+                                {% for nom in noms_joueurs %}
+                                    <td>{{ pronos[nom] if nom in pronos else '-' }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info mt-3 text-center">Aucun combiné n'a encore été clôturé.</div>
+    {% endfor %}
 </div>
 
-<div id="section_combine" class="conteneur_historique_pari_combine">
-<div> TEST POUR VOIR SI CA MARCHE </div>
-</div>
+    <script>
+        function afficherPari(type){
+            const sectionUnique=document.getElementById('section_unique');
+            const sectionCombine=document.getElementById('section_combine');
+            const btnUnique = document.getElementById('btn_unique');
+            const btnCombine = document.getElementById('btn_combine');
 
-<script>
-function afficherPari(type){
-    const sectionUnique=document.getElementById('section_unique');
-    const sectionCombine=document.getElementById('section_combine');
-    const btnUnique = document.getElementById('btn_unique');
-    const btnCombine = document.getElementById('btn_combine');
-
-    if (type === 'unique') {
-        sectionUnique.classList.remove('hidden');
-        sectionCombine.classList.add('hidden');
-        btnUnique.classList.add('active');
-        btnCombine.classList.remove('active');
-    } else {
-        sectionUnique.classList.add('hidden');
-        sectionCombine.classList.remove('hidden');
-        btnCombine.classList.add('active');
-        btnUnique.classList.remove('active');
-    }
-}
-</script>
+            if (type === 'unique') {
+                sectionUnique.classList.remove('hidden');
+                sectionCombine.classList.add('hidden');
+                btnUnique.classList.add('active');
+                btnCombine.classList.remove('active');
+            } else {
+                sectionUnique.classList.add('hidden');
+                sectionCombine.classList.remove('hidden');
+                btnCombine.classList.add('active');
+                btnUnique.classList.remove('active');
+            }
+        }
+    </script>
 {% endblock %}
